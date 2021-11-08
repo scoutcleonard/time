@@ -1,0 +1,49 @@
+---
+title: "Index"
+author: "Scout Leonard"
+date: "11/8/2021"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = FALSE, warning = FALSE, message = FALSE)
+```
+
+```{r}
+# get libraries
+if (!require(librarian)){
+  install.packages("librarian")
+  library(librarian)
+}
+librarian::shelf(
+  clockify, dplyr, DT, glue, lubridate, readr, here)
+
+# CHANGE THESE VARIABLES!
+api_txt <- "../clockify_api.txt"
+project_name <- "mc-cover"
+
+# use API key to authenticate
+CLOCKIFY_API_KEY <- readLines(api_txt)
+set_api_key(CLOCKIFY_API_KEY)
+
+# get data
+d_projects <- projects() %>% 
+      select(project_id, project_name)
+d_users <- users() %>% 
+      select(user_id, user_name)
+d_times <- time_entries(concise = F) %>% 
+  left_join(
+    d_projects, by = "project_id") %>% 
+  left_join(
+    d_users, by = "user_id")
+
+# show table
+d_times %>% 
+  select(
+    user_name, project_name, 
+    time_start, duration, description) %>% 
+  arrange(user_name, project_name, time_start) %>% 
+  datatable() %>%
+  formatRound(columns=c('duration'), digits=3)
+```
+
