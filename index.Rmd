@@ -16,7 +16,9 @@ if (!require(librarian)){
   library(librarian)
 }
 librarian::shelf(
-  clockify, dplyr, DT, glue, lubridate, readr, here)
+  bbest/clockify,
+  dplyr, DT, ggplot2,
+  quiet = TRUE)
 
 # CHANGE THESE VARIABLES!
 api_txt <- "../clockify_api.txt"
@@ -27,23 +29,120 @@ CLOCKIFY_API_KEY <- readLines(api_txt)
 set_api_key(CLOCKIFY_API_KEY)
 
 # get data
-d_projects <- projects() %>% 
-      select(project_id, project_name)
-d_users <- users() %>% 
-      select(user_id, user_name)
-d_times <- time_entries(concise = F) %>% 
-  left_join(
-    d_projects, by = "project_id") %>% 
-  left_join(
-    d_users, by = "user_id")
+d_times <- time_entries_all()
 
-# show table
-d_times %>% 
+# table(d_times$project_name) # confirm project_name
+d_times <- d_times %>%
+  filter(
+    project_name == !!project_name) %>%
   select(
-    user_name, project_name, 
-    time_start, duration, description) %>% 
-  arrange(user_name, project_name, time_start) %>% 
-  datatable() %>%
-  formatRound(columns=c('duration'), digits=3)
+    task_name, time_start, duration_hrs, 
+    user_name, description) %>% 
+  arrange(task_name, time_start)
+```
+
+## mc-cover {.tabset}
+
+### Overall
+
+```{r}
+# plot ALL
+plot_burndown(
+  d_times,
+  beg = as.Date("2021-10-28"), # day before
+  end = as.Date("2021-12-02"), # day after
+  hrs = 51)
+
+# table ALL
+datatable(d_times)
+```
+
+### import
+
+```{r}
+task <- "import"
+d_task <- d_times %>% 
+  filter(task_name == !!task)
+plot_burndown(
+  d_task,
+  beg = as.Date("2021-10-28"), # day before
+  end = as.Date("2021-11-10"), # day after
+  hrs = 6)
+
+datatable(d_task)
+```
+
+### tidy/filter
+
+```{r}
+task <- "tidy/filter"
+d_task <- d_times %>% 
+  filter(task_name == !!task)
+plot_burndown(
+  d_task,
+  beg = as.Date("2021-10-30"), # day before
+  end = as.Date("2021-11-11"), # day after
+  hrs = 13)
+
+datatable(d_task)
+```
+
+### calculate
+
+```{r}
+task <- "calculate"
+d_task <- d_times %>% 
+  filter(task_name == !!task)
+plot_burndown(
+  d_task,
+  beg = as.Date("2021-11-08"), # day before
+  end = as.Date("2021-11-11"), # day after
+  hrs = 13)
+
+datatable(d_task)
+```
+
+### visualize
+
+```{r}
+task <- "visualize"
+d_task <- d_times %>% 
+  filter(task_name == !!task)
+plot_burndown(
+  d_task,
+  beg = as.Date("2021-10-31"), # day before
+  end = as.Date("2021-12-01"), # day after
+  hrs = 6)
+
+datatable(d_task)
+```
+### model
+
+```{r}
+task <- "model"
+d_task <- d_times %>% 
+  filter(task_name == !!task)
+plot_burndown(
+  d_task,
+  beg = as.Date("2021-11-15"), # day before
+  end = as.Date("2021-11-19"), # day after
+  hrs = 6)
+
+datatable(d_task)
+```
+
+### communicate
+
+```{r}
+task <- "communicate"
+d_task <- d_times %>% 
+  filter(task_name == !!task)
+plot_burndown(
+  d_task,
+  beg = as.Date("2021-11-09"), # day before
+  end = as.Date("2021-11-29"), # day after
+  hrs = 7)
+
+datatable(d_task)
 ```
 
