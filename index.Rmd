@@ -146,6 +146,12 @@ plot_burndown(
 datatable(d_task)
 ```
 
-## Welcome
-I am testing github issues
+# Interpret Burndown Plots
 
+- The **Overall** project is under budget, according to the burndown visualization. It currently exceeds the number of hours we estimated it would take us to complete by about 15 hours. You can see the final number of hours, in grey, lies above the red line for today's date, indicating there are more hours to complete if we wish to be true to our plan. 
+- The **Import** task is under budget, according to the burndown visualization. We estimated it would take us 6 hours to import our data, but it took less than 3, according to our the task time visualization in grey. 
+- The **Tidy/Filter** task is also under budget, according to the burndown visualization. We estimated it would take us 13 hours to tidy and filter our data, but it took less than 3, according to our the task time visualization in grey. This task was about 9 hours over budget (i.e. it took us about 6 hours to tidy and import).
+- The **Calculate** task is under budget, according to the burndown visualization. We estimated it would take us 15 hours to calculate our indices, but it took less than that, according to our the task time visualization in grey. 
+- The **Visualize** task is _extremely_ under budget, according to the burndown visualization. We estimated it would take us 6 hours to visualize our data, but we did not visualize it at all, therefore should not have had any budget for visualizing. I think one of the challenges of this was that for us, visualizing our indices in a spatial way was the main calculation we did, and so both writing the functions and producing the maps were classified and clocked as **Calculate** or **Communicate** by everyone in our group. We found that it was a success that we were consistent about this, and would be more mindful about defining what we mean by visualizing data in the future. 
+- The **Model** task is under budget, according to the burndown visualization, but only by about 3 hours, which is the closest margin we have! We estimated it would take us 6 hours to model our indices, but it took about 3, according to our the task time visualization in grey.
+- The **Communicate** task is _over_ budget,and the only task to be over, according to the burndown visualization. We estimated it would take us 6 hours to communicate our results, but it took close to 16, which we can see by adding the data visible below zero on our burndown, which indicates hours spend beyond our budget, to that above. I think we underestimated this portion because it is multi-faceted in a way we overlooked. Not only did this include presenting our results to the class, but it also included many hours of practicing that presentation, preparing empty notebooks and binders to teach the class, and tidying multiple notebooks for the final presentation. 
